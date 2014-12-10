@@ -77,8 +77,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="com.br.jty.process.entity.Departament" project="jty-process-core" 
-    file="/jty-process-core/src/main/java/com/br/jty/process/entity/Departament.java" binary="false" 
+  <class id="9" language="java" name="com.br.jty.process.entity.Department" project="jty-process-core" 
+    file="/jty-process-core/src/main/java/com/br/jty/process/entity/Department.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="460" y="206"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -114,64 +114,92 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <generalization id="13">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="14">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="activities"/>      
-      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
+  <association id="13">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="14" name="attachments">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="15" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="16">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="11"/>  
+  </generalization>  
   <association id="17">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="18" name="costCenter"/>      
-      <multiplicity id="19" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="18" name="messagesPerProcess">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="20">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="21" name="arquiveBox"/>      
-      <multiplicity id="22" minimum="0" maximum="1"/>    
+      <attribute id="21" name="liveBox">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="23">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="24" name="SLA"/>      
-      <multiplicity id="25" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="24" name="activities">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="26">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="27" name="attachments"/>      
-      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="27" name="orderedActivityDependencies">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="29">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="30" name="steps"/>      
-      <multiplicity id="31" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="30" name="costCenter">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="31" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="32">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="33" name="orderedActivityDependencies"/>      
-      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="33" name="steps">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="35">    
@@ -179,34 +207,42 @@
     <bendpoint x="534" y="281"/>    
     <bendpoint x="534" y="160"/>    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="36" name="responsible"/>      
-      <multiplicity id="37" minimum="0" maximum="1"/>    
+      <attribute id="36" name="responsible">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="38">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <generalization id="39">    
+  <association id="38">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="39" name="SLA">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="41">    
     <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <association id="40">    
+  <association id="42">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="41" name="liveBox"/>      
-      <multiplicity id="42" minimum="0" maximum="1"/>    
+      <attribute id="43" name="arquiveBox">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="44" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="43">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="44" name="messagesPerProcess"/>      
-      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
