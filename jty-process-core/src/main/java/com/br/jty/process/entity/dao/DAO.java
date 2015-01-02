@@ -1,5 +1,9 @@
 package com.br.jty.process.entity.dao;
 
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +15,7 @@ public class DAO<T> {
 
 	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
+    
     
     /**
      * Method save.

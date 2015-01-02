@@ -6,18 +6,7 @@
 	<persistence-unit name="persistence" transaction-type="RESOURCE_LOCAL">
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>com.br.jty.process.entity.Activity </class>
-		<class>com.br.jty.process.entity.Attachment </class>
-		<class>com.br.jty.process.entity.CostCenter </class>
-		<class>com.br.jty.process.entity.Department </class>
-		<class>com.br.jty.process.entity.DependecyActivity </class>
-		<class>com.br.jty.process.entity.Message </class>
-		<class>com.br.jty.process.entity.Process </class>
-		<class>com.br.jty.process.entity.Responsible </class>
-		<class>com.br.jty.process.entity.SLA </class>
-		<class>com.br.jty.process.entity.Step </class>
-		<class>com.br.jty.process.entity.User </class>
-		<class>com.br.jty.process.entity.Role</class>
+		
 
        <properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
