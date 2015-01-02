@@ -1,17 +1,21 @@
-package com.br.jty.process.entity;
+package com.br.jty.process.entity.master;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 
 @Table
 @Entity
-public class Department implements Serializable {
+public class StepMaster implements Serializable{
 
 	/**
 	 * 
@@ -20,14 +24,12 @@ public class Department implements Serializable {
 
 	@Id
 	@GeneratedValue (strategy=GenerationType.AUTO)
-	@Column(name="DEPARTAMENT_ID")
+	@Column(name="STEP_ID")
 	private Long id;
 	
-	@Column
-	private String name;
-	
-	@Column
-	private String description;
+	@ManyToMany
+	@JoinTable(name="step_master_acts")
+	private List <ActivityMaster> activities ;
 
 	public Long getId() {
 		return id;
@@ -37,21 +39,12 @@ public class Department implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public List<ActivityMaster> getActivities() {
+		return activities;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setActivities(List<ActivityMaster> activities) {
+		this.activities = activities;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
 	
 }

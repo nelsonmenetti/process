@@ -1,6 +1,6 @@
-package com.br.jty.process.entity;
+package com.br.jty.process.entity.execution;
 
-import java.io.Serializable;
+import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,16 +11,11 @@ import javax.persistence.Table;
 
 @Table
 @Entity
-public class Department implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Attachment {
 
 	@Id
 	@GeneratedValue (strategy=GenerationType.AUTO)
-	@Column(name="DEPARTAMENT_ID")
+	@Column(name="ATTACHMENT_ID")
 	private Long id;
 	
 	@Column
@@ -28,6 +23,9 @@ public class Department implements Serializable {
 	
 	@Column
 	private String description;
+	
+	@Column
+	private Blob document;
 
 	public Long getId() {
 		return id;
@@ -52,6 +50,21 @@ public class Department implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Blob getDocument() {
+		return document;
+	}
+
+	public void setDocument(Blob document) {
+		this.document = document;
+	}
+
+	@Override
+	public String toString() {
+		return "Attachment [id=" + id + ", name=" + name + ", description="
+				+ description + "]";
+	}
+	
 	
 	
 }
