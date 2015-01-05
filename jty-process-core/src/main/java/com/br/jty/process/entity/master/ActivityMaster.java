@@ -43,19 +43,10 @@ public class ActivityMaster implements Serializable {
 	@ManyToOne
 	@JoinColumn (name="SLA_ID")
 	private SLA SLA;
-	
-	@Column
-	private String status ;
-	
-	@Column
-	private String result;
-	
+		
 	@ManyToOne
 	@JoinColumn (name="COSTCENTER_ID")
 	private CostCenter costCenter;
-	
-	@Column
-	private Long version;
 	
 	@ManyToOne
 	StepMaster step;
@@ -101,21 +92,6 @@ public class ActivityMaster implements Serializable {
 		SLA = sLA;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getResult() {
-		return result;
-	}
-
-	public void setResult(String result) {
-		this.result = result;
-	}
 
 	public CostCenter getCostCenter() {
 		return costCenter;
@@ -125,14 +101,6 @@ public class ActivityMaster implements Serializable {
 		this.costCenter = costCenter;
 	}
 
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-
 	public StepMaster getStep() {
 		return step;
 	}
@@ -140,5 +108,13 @@ public class ActivityMaster implements Serializable {
 	public void setStep(StepMaster step) {
 		this.step = step;
 	}
+
+	@Override
+	public String toString() {
+		return "ActivityMaster [id=" + id + ", name=" + name + ", description="
+				+ description + ", department=" + department + ", SLA=" + SLA
+				+", costCenter="+ costCenter + ", step=" + step + "]";
+	}
+	
 	
 }

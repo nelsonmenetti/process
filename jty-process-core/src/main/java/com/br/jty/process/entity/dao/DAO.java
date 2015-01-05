@@ -1,9 +1,6 @@
 package com.br.jty.process.entity.dao;
 
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,8 +10,8 @@ import javax.persistence.Persistence;
  */
 public class DAO<T> {
 
-	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+	private EntityManager entityManager = entityManagerFactory.createEntityManager();
     
     
     /**
@@ -52,5 +49,27 @@ public class DAO<T> {
     	entityManager.remove(object);
     	entityManager.getTransaction().commit();
     }
+
+
+	public EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
+	}
+
+
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		this.entityManagerFactory = entityManagerFactory;
+	}
+
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+    
+    
     
 }

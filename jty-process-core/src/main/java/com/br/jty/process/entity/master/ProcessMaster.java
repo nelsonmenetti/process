@@ -36,6 +36,9 @@ public class ProcessMaster implements Serializable{
 	@JoinTable(name="process_master_step")	
 	List<StepMaster> steps;
 
+	@Column
+	Long version;
+	
 	public Long getId() {
 		return id;
 	}
@@ -66,6 +69,14 @@ public class ProcessMaster implements Serializable{
 
 	public void setSteps(List<StepMaster> steps) {
 		this.steps = steps;
+	}
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 	@Override
