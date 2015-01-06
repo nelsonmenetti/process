@@ -29,9 +29,6 @@ public class LinkedActsMaster implements Serializable {
 	@Column
 	private String name;
 	
-	@OneToOne
-	private StepMaster step;
-	
 	@OneToMany
 	private List<ActivityMaster> orderedActivityDependencies ;
 
@@ -60,13 +57,6 @@ public class LinkedActsMaster implements Serializable {
 		this.orderedActivityDependencies = orderedActivityDependencies;
 	}
 
-	public StepMaster getStep() {
-		return step;
-	}
-
-	public void setStep(StepMaster step) {
-		this.step = step;
-	}
 
 	@Override
 	public int hashCode() {
@@ -78,7 +68,6 @@ public class LinkedActsMaster implements Serializable {
 				* result
 				+ ((orderedActivityDependencies == null) ? 0
 						: orderedActivityDependencies.hashCode());
-		result = prime * result + ((step == null) ? 0 : step.hashCode());
 		return result;
 	}
 
@@ -106,12 +95,7 @@ public class LinkedActsMaster implements Serializable {
 				return false;
 		} else if (!orderedActivityDependencies
 				.equals(other.orderedActivityDependencies))
-			return false;
-		if (step == null) {
-			if (other.step != null)
-				return false;
-		} else if (!step.equals(other.step))
-			return false;
+			return false;		
 		return true;
 	}
 	

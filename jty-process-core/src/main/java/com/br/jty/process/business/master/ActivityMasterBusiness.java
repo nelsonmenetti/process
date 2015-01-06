@@ -1,9 +1,7 @@
 package com.br.jty.process.business.master;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.br.jty.process.business.exception.IllegalParameterException;
 import com.br.jty.process.entity.CostCenter;
@@ -14,10 +12,8 @@ import com.br.jty.process.entity.dao.CostCenterDAO;
 import com.br.jty.process.entity.dao.DepartmentDAO;
 import com.br.jty.process.entity.dao.LinkedActsMasterDAO;
 import com.br.jty.process.entity.dao.SLADAO;
-import com.br.jty.process.entity.dao.StepDAO;
 import com.br.jty.process.entity.master.ActivityMaster;
 import com.br.jty.process.entity.master.LinkedActsMaster;
-import com.br.jty.process.entity.master.StepMaster;
 
 public class ActivityMasterBusiness {
 
@@ -26,7 +22,6 @@ public class ActivityMasterBusiness {
 	private SLADAO SLADAO = new SLADAO();
 	private DepartmentDAO departmentDAO = new DepartmentDAO();
 	private CostCenterDAO costCenterDAO= new CostCenterDAO();
-	private StepDAO stepDAO= new StepDAO();
 
 	public ActivityMaster findActivity(Long id) throws IllegalParameterException{
 		if(id == null){
@@ -66,13 +61,11 @@ public class ActivityMasterBusiness {
 		return linkedActivityMasterDAO.find(name);
 	}
 	
-	public ActivityMaster createActivity(String name,String  description,Long departmentId, Long slaId, Long costCenterId,Long  version, Long stepId) throws IllegalParameterException{
+	public ActivityMaster createActivity(String name,String  description,Long departmentId, Long slaId, Long costCenterId,Long  version) throws IllegalParameterException{
 		boolean isSLAValid=validateSLAExists(slaId);
 		boolean isDepartmenttValid=validateDepartamentExists(departmentId);
 		boolean isCostCenterValid=validateCostCenterExists(costCenterId);
-		boolean isStepValid = validateStep(stepId);
-		boolean isActivityUnique=validateActivityUniqueForStep(name, stepId);
-		boolean isCreationInputValid = isSLAValid && isDepartmenttValid && isCostCenterValid && isActivityUnique && isStepValid;
+		boolean isCreationInputValid = isSLAValid && isDepartmenttValid && isCostCenterValid ;
 		if(isCreationInputValid){
 			CostCenter costCenter = new CostCenter();
 			costCenter.setId(costCenterId);			
@@ -80,16 +73,12 @@ public class ActivityMasterBusiness {
 			department.setId(departmentId);			
 			SLA sla= new SLA();
 			sla.setId(slaId);
-			StepMaster step = new StepMaster();
-			step.setId(stepId);
 			ActivityMaster master = new ActivityMaster();
 			master.setCostCenter(costCenter);
 			master.setDepartment(department);
 			master.setSLA(sla);
 			master.setName(name);
-			master.setStep(step);
 			master.setDescription(description);
-			master.setStep(step);
 			activityMasterDAO.save(master);
 			return master;
 		}else{			
@@ -100,11 +89,7 @@ public class ActivityMasterBusiness {
 				message.append("Id de Departamento invalido\n");					
 			}else if(!isCostCenterValid){
 				message.append("Id de Centro de custo invalido\n");					
-			}else if(!isStepValid){
-				message.append("Id do Passo invalido\n");				
-			}else if(!isActivityUnique){
-				message.append("Atividade nao e unica neste Passo com este nome\n");	
-			}			
+			}		
 			throw new IllegalParameterException(message.toString());  
 		}
 	}	
@@ -172,16 +157,7 @@ public class ActivityMasterBusiness {
 			}			
 			orderedActList.add(activity);
 		}		
-		Set<Long> stepIds = new HashSet<Long>();
-		for(ActivityMaster activity :orderedActList){
-			stepIds.add(activity.getStep().getId());
-		}
-		if(stepIds.size() >1){
-			StringBuilder message =new StringBuilder();
-			message.append("Atividades envidadas possuem relação com Passos diferentes\n");				
-			throw new IllegalParameterException(message.toString());	
-		}
-		master.setStep(orderedActList.get(0).getStep());
+		
 		linkedActivityMasterDAO.save(master);		
 		return master;
 	}
@@ -269,13 +245,7 @@ public class ActivityMasterBusiness {
 		return exists;
 	}
 	
-	private boolean validateStep(Long id){
-		boolean exists = false;
-		if(stepDAO.find(id) != null){
-			exists=true;
-		}
-		return exists;
-	}
+	
 	
 	private boolean validateActivityExists(Long id){
 		boolean exists = false;
@@ -334,13 +304,7 @@ public class ActivityMasterBusiness {
 		this.costCenterDAO = costCenterDAO;
 	}
 
-	public StepDAO getStepDAO() {
-		return stepDAO;
-	}
-
-	public void setStepDAO(StepDAO stepDAO) {
-		this.stepDAO = stepDAO;
-	}
+	
 
 	
 	

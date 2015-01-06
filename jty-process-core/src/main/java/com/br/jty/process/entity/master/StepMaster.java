@@ -27,6 +27,10 @@ public class StepMaster implements Serializable{
 	@Column(name="STEP_ID")
 	private Long id;
 	
+	@Column
+	private String name;
+	
+	
 	@ManyToMany
 	@JoinTable(name="step_master_acts")
 	private List <ActivityMaster> activities ;
@@ -59,6 +63,15 @@ public class StepMaster implements Serializable{
 
 	public void setLinkedActivities(List<LinkedActsMaster> linkedActivities) {
 		this.linkedActivities = linkedActivities;
+	}
+
+		
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

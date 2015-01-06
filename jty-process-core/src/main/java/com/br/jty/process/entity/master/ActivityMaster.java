@@ -47,10 +47,6 @@ public class ActivityMaster implements Serializable {
 	@ManyToOne
 	@JoinColumn (name="COSTCENTER_ID")
 	private CostCenter costCenter;
-	
-	@ManyToOne
-	StepMaster step;
-	
 
 	public Long getId() {
 		return id;
@@ -101,19 +97,13 @@ public class ActivityMaster implements Serializable {
 		this.costCenter = costCenter;
 	}
 
-	public StepMaster getStep() {
-		return step;
-	}
 
-	public void setStep(StepMaster step) {
-		this.step = step;
-	}
 
 	@Override
 	public String toString() {
 		return "ActivityMaster [id=" + id + ", name=" + name + ", description="
 				+ description + ", department=" + department + ", SLA=" + SLA
-				+", costCenter="+ costCenter + ", step=" + step + "]";
+				+", costCenter="+ costCenter + "]";
 	}
 
 	@Override
@@ -129,7 +119,6 @@ public class ActivityMaster implements Serializable {
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((step == null) ? 0 : step.hashCode());
 		return result;
 	}
 
@@ -171,12 +160,7 @@ public class ActivityMaster implements Serializable {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
-		if (step == null) {
-			if (other.step != null)
-				return false;
-		} else if (!step.equals(other.step))
-			return false;
+			return false;		
 		return true;
 	}
 	
