@@ -115,6 +115,70 @@ public class ActivityMaster implements Serializable {
 				+ description + ", department=" + department + ", SLA=" + SLA
 				+", costCenter="+ costCenter + ", step=" + step + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((SLA == null) ? 0 : SLA.hashCode());
+		result = prime * result
+				+ ((costCenter == null) ? 0 : costCenter.hashCode());
+		result = prime * result
+				+ ((department == null) ? 0 : department.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((step == null) ? 0 : step.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ActivityMaster other = (ActivityMaster) obj;
+		if (SLA == null) {
+			if (other.SLA != null)
+				return false;
+		} else if (!SLA.equals(other.SLA))
+			return false;
+		if (costCenter == null) {
+			if (other.costCenter != null)
+				return false;
+		} else if (!costCenter.equals(other.costCenter))
+			return false;
+		if (department == null) {
+			if (other.department != null)
+				return false;
+		} else if (!department.equals(other.department))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (step == null) {
+			if (other.step != null)
+				return false;
+		} else if (!step.equals(other.step))
+			return false;
+		return true;
+	}
 	
 	
 }

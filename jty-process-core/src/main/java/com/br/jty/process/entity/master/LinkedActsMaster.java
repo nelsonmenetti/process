@@ -1,17 +1,20 @@
-package com.br.jty.process.entity;
+package com.br.jty.process.entity.master;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Table
 @Entity
-public class CostCenter implements Serializable {
+public class LinkedActsMaster implements Serializable {
 
 	/**
 	 * 
@@ -20,14 +23,17 @@ public class CostCenter implements Serializable {
 
 	@Id
 	@GeneratedValue (strategy=GenerationType.AUTO)
-	@Column(name="COSTCENTER_ID")
+	@Column(name="ACT_ID")
 	private Long id;
 	
 	@Column
 	private String name;
 	
-	@Column
-	private String description;
+	@OneToOne
+	private StepMaster step;
+	
+	@OneToMany
+	private List<ActivityMaster> orderedActivityDependencies ;
 
 	public Long getId() {
 		return id;
@@ -45,28 +51,34 @@ public class CostCenter implements Serializable {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public List<ActivityMaster> getOrderedActivityDependencies() {
+		return orderedActivityDependencies;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setOrderedActivityDependencies(
+			List<ActivityMaster> orderedActivityDependencies) {
+		this.orderedActivityDependencies = orderedActivityDependencies;
 	}
 
-	@Override
-	public String toString() {
-		return "CostCenter [id=" + id + ", name=" + name + ", description="
-				+ description + "]";
+	public StepMaster getStep() {
+		return step;
+	}
+
+	public void setStep(StepMaster step) {
+		this.step = step;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime
+				* result
+				+ ((orderedActivityDependencies == null) ? 0
+						: orderedActivityDependencies.hashCode());
+		result = prime * result + ((step == null) ? 0 : step.hashCode());
 		return result;
 	}
 
@@ -78,12 +90,7 @@ public class CostCenter implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CostCenter other = (CostCenter) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
+		LinkedActsMaster other = (LinkedActsMaster) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -93,6 +100,17 @@ public class CostCenter implements Serializable {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (orderedActivityDependencies == null) {
+			if (other.orderedActivityDependencies != null)
+				return false;
+		} else if (!orderedActivityDependencies
+				.equals(other.orderedActivityDependencies))
+			return false;
+		if (step == null) {
+			if (other.step != null)
+				return false;
+		} else if (!step.equals(other.step))
 			return false;
 		return true;
 	}

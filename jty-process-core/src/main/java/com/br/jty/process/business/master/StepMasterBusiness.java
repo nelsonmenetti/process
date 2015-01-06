@@ -7,7 +7,7 @@ public class StepMasterBusiness {
 	public void updateStep(){}
 	public void deleteStep(){}
 	public void addActivityToStep(){}	
-	public void removeActivityToStep(){}
+	public void removeActivityFromStep(){}
 	public void addDepencyActivitiesToStep(){}
 	public void removeDepencyActivitiesToStep(){}
 

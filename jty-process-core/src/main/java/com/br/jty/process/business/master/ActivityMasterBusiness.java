@@ -1,16 +1,70 @@
 package com.br.jty.process.business.master;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.br.jty.process.business.exception.IllegalParameterException;
 import com.br.jty.process.entity.CostCenter;
 import com.br.jty.process.entity.Department;
 import com.br.jty.process.entity.SLA;
-import com.br.jty.process.entity.dao.DAO;
+import com.br.jty.process.entity.dao.ActivityMasterDAO;
+import com.br.jty.process.entity.dao.CostCenterDAO;
+import com.br.jty.process.entity.dao.DepartmentDAO;
+import com.br.jty.process.entity.dao.LinkedActsMasterDAO;
+import com.br.jty.process.entity.dao.SLADAO;
+import com.br.jty.process.entity.dao.StepDAO;
 import com.br.jty.process.entity.master.ActivityMaster;
+import com.br.jty.process.entity.master.LinkedActsMaster;
 import com.br.jty.process.entity.master.StepMaster;
 
 public class ActivityMasterBusiness {
 
-	DAO<ActivityMaster> activityMasterDAO = new DAO<ActivityMaster>();
+	private ActivityMasterDAO activityMasterDAO = new ActivityMasterDAO();
+	private LinkedActsMasterDAO linkedActivityMasterDAO = new LinkedActsMasterDAO();
+	private SLADAO SLADAO = new SLADAO();
+	private DepartmentDAO departmentDAO = new DepartmentDAO();
+	private CostCenterDAO costCenterDAO= new CostCenterDAO();
+	private StepDAO stepDAO= new StepDAO();
+
+	public ActivityMaster findActivity(Long id) throws IllegalParameterException{
+		if(id == null){
+			StringBuilder message =new StringBuilder();
+			message.append("Id nulo \n");				
+			throw new IllegalParameterException(message.toString()); 
+		}
+		ActivityMaster result = activityMasterDAO.find(id);
+		return result;
+	}
+	
+	public List<ActivityMaster> findActivitiesByName(String name) throws IllegalParameterException{
+		if(name == null){
+			StringBuilder message =new StringBuilder();
+			message.append("Name nulo \n");				
+			throw new IllegalParameterException(message.toString()); 
+		}
+		return activityMasterDAO.find(name);
+	}
+	
+	public LinkedActsMaster findLinkedActivities (Long id) throws IllegalParameterException{
+		if(id == null){
+			StringBuilder message =new StringBuilder();
+			message.append("Id nulo \n");				
+			throw new IllegalParameterException(message.toString()); 
+		}
+		LinkedActsMaster result = linkedActivityMasterDAO.find(id);
+		return result;		
+	}
+	
+	public List<LinkedActsMaster> findLinkedActivities (String name) throws IllegalParameterException{
+		if(name == null){
+			StringBuilder message =new StringBuilder();
+			message.append("Name nulo \n");				
+			throw new IllegalParameterException(message.toString()); 
+		}
+		return linkedActivityMasterDAO.find(name);
+	}
 	
 	public ActivityMaster createActivity(String name,String  description,Long departmentId, Long slaId, Long costCenterId,Long  version, Long stepId) throws IllegalParameterException{
 		boolean isSLAValid=validateSLAExists(slaId);
@@ -59,8 +113,8 @@ public class ActivityMasterBusiness {
 		boolean isSLAValid=validateSLAExists(slaId);
 		boolean isDepartmenttValid=validateDepartamentExists(departmentId);
 		boolean isCostCenterValid=validateCostCenterExists(costCenterId);
-		boolean isActivityExists=validateActiviy(activityId);
-		boolean isUpdateInputValid = isSLAValid && isDepartmenttValid && isCostCenterValid && isActivityExists;
+		boolean activityExists=validateActivityExists(activityId);
+		boolean isUpdateInputValid = isSLAValid && isDepartmenttValid && isCostCenterValid && activityExists;
 		if(isUpdateInputValid){
 			CostCenter costCenter = new CostCenter();
 			costCenter.setId(costCenterId);			
@@ -74,6 +128,7 @@ public class ActivityMasterBusiness {
 			master.setSLA(sla);
 			master.setName(name);
 			master.setDescription(description);
+			master.setId(activityId);
 			activityMasterDAO.update(master);
 		}else{			
 			StringBuilder message =new StringBuilder();
@@ -83,59 +138,210 @@ public class ActivityMasterBusiness {
 				message.append("Id de Departamento invalido\n");					
 			}else if(!isCostCenterValid){
 				message.append("Id de Centro de custo invalido\n");					
-			}else if(!isActivityExists){
+			}else if(!activityExists){
 				message.append("Atividade nao existe\n");				
 			}			
 			throw new IllegalParameterException(message.toString());  
 		}
 	}
 
+	public void deleteActivity(Long activityId) throws IllegalParameterException{
+		boolean activityExists=validateActivityExists(activityId);
+		if(activityExists){
+			ActivityMaster master = new ActivityMaster();
+			master.setId(activityId);
+			activityMasterDAO.remove(master);
+		}else{			
+			StringBuilder message =new StringBuilder();
+			message.append("Atividade nao existe\n");				
+			throw new IllegalParameterException(message.toString());  
+		}
+	}
 	
-	public void createDependencyActivity(){}
-	public void editDependencyActivity(){}
-	public void deleteActivity(){}
-	public void deleteDependencyActivity(){}
+	public LinkedActsMaster createLinkedActivity(String name, List<Long> activitiesIds) throws IllegalParameterException{		
+		List<ActivityMaster> orderedActList = new ArrayList<ActivityMaster>();
+		LinkedActsMaster master = new LinkedActsMaster();
+		master.setName(name);
+		master.setOrderedActivityDependencies(orderedActList);
+		for(Long activityId:activitiesIds){
+			ActivityMaster activity = activityMasterDAO.find(activityId);
+			if(activity == null){
+				StringBuilder message =new StringBuilder();
+				message.append("Atividade"+activityId+"nao existe\n");				
+				throw new IllegalParameterException(message.toString());
+			}			
+			orderedActList.add(activity);
+		}		
+		Set<Long> stepIds = new HashSet<Long>();
+		for(ActivityMaster activity :orderedActList){
+			stepIds.add(activity.getStep().getId());
+		}
+		if(stepIds.size() >1){
+			StringBuilder message =new StringBuilder();
+			message.append("Atividades envidadas possuem relação com Passos diferentes\n");				
+			throw new IllegalParameterException(message.toString());	
+		}
+		master.setStep(orderedActList.get(0).getStep());
+		linkedActivityMasterDAO.save(master);		
+		return master;
+	}
+	
+	public void addActivityToLinkedActivity(Long dependencyActId, List<Long> activitiesIds) throws IllegalParameterException{
+		LinkedActsMaster master = linkedActivityMasterDAO.find(dependencyActId);
+		List<ActivityMaster> orderedActList = new ArrayList<ActivityMaster>();
 
-	public void attachDocumentToActivity(){}
-	public void removeDocumentFromActivity(){}
+		if(master != null){
+			for(Long activityId:activitiesIds){
+				ActivityMaster activity = activityMasterDAO.find(activityId);
+				if(activity == null){
+					StringBuilder message =new StringBuilder();
+					message.append("Atividade"+activityId+"nao existe\n");				
+					throw new IllegalParameterException(message.toString());
+				}			
+				orderedActList.add(activity);
+			}			
+			master.getOrderedActivityDependencies().addAll(orderedActList);
+			linkedActivityMasterDAO.save(master);
+		}else{
+			StringBuilder message =new StringBuilder();
+			message.append("Atividade Ligada"+dependencyActId+"nao existe\n");				
+			throw new IllegalParameterException(message.toString());
+		}				
+	}
+		
+	public void removeActivityFromLinkedActivity(Long dependencyActId, List<Long> activitiesIds) throws IllegalParameterException{
+		LinkedActsMaster master = linkedActivityMasterDAO.find(dependencyActId);
+		List<ActivityMaster> orderedActList = new ArrayList<ActivityMaster>();
+
+		if(master != null){
+			for(Long activityId:activitiesIds){
+				ActivityMaster activity = activityMasterDAO.find(activityId);
+				if(activity == null){
+					StringBuilder message =new StringBuilder();
+					message.append("Atividade"+activityId+"nao existe\n");				
+					throw new IllegalParameterException(message.toString());
+				}			
+				orderedActList.add(activity);
+			}			
+			master.getOrderedActivityDependencies().removeAll(orderedActList);
+			linkedActivityMasterDAO.save(master);
+		}else{
+			StringBuilder message =new StringBuilder();
+			message.append("Atividade Ligada"+dependencyActId+"nao existe\n");				
+			throw new IllegalParameterException(message.toString());
+		}				
 	
+	}
 	
-	
-	
+	public void deleteLinkedActivity(Long dependencyActId) throws IllegalParameterException{
+		LinkedActsMaster master = linkedActivityMasterDAO.find(dependencyActId);
+		if(master != null){
+			linkedActivityMasterDAO.remove(master);
+		}else{
+			StringBuilder message =new StringBuilder();
+			message.append("Atividade Ligada"+dependencyActId+"nao existe\n");				
+			throw new IllegalParameterException(message.toString());
+		}					
+	}
+		
 	
 	private boolean validateSLAExists(Long id){
-		return false;
+		boolean exists = false;
+		if(SLADAO.find(id) != null){
+			exists=true;
+		}
+		return exists;
 	}
 	
 	private boolean validateDepartamentExists(Long id){
-		return false;
+		boolean exists = false;
+		if(departmentDAO.find(id) != null){
+			exists=true;
+		}
+		return exists;
 	}
 	
 	private boolean validateCostCenterExists(Long id){
-		return false;
+		boolean exists = false;
+		if(costCenterDAO.find(id) != null){
+			exists=true;
+		}
+		return exists;
 	}
 	
-	private boolean validateStep(Long stepId){
-		return false;
+	private boolean validateStep(Long id){
+		boolean exists = false;
+		if(stepDAO.find(id) != null){
+			exists=true;
+		}
+		return exists;
 	}
 	
-	private boolean validateActiviy(Long activityId){
-		return false;
+	private boolean validateActivityExists(Long id){
+		boolean exists = false;
+		if(activityMasterDAO.find(id) != null){
+			exists=true;
+		}
+		return exists;
 	}
 	
 	private boolean validateActivityUniqueForStep(String name, Long stepId){
-		return false;
+		boolean exists = false;
+		if(activityMasterDAO.find(name,stepId) != null){
+			exists=true;
+		}
+		return exists;
 	}
 
-
-	public DAO<ActivityMaster> getActivityMasterDAO() {
+	public ActivityMasterDAO getActivityMasterDAO() {
 		return activityMasterDAO;
 	}
 
-
-	public void setActivityMasterDAO(DAO<ActivityMaster> activityMasterDAO) {
+	public void setActivityMasterDAO(ActivityMasterDAO activityMasterDAO) {
 		this.activityMasterDAO = activityMasterDAO;
 	}
+
+	public LinkedActsMasterDAO getLinkedActivityMasterDAO() {
+		return linkedActivityMasterDAO;
+	}
+
+	public void setLinkedActivityMasterDAO(
+			LinkedActsMasterDAO linkedActivityMasterDAO) {
+		this.linkedActivityMasterDAO = linkedActivityMasterDAO;
+	}
+
+	public SLADAO getSLADAO() {
+		return SLADAO;
+	}
+
+	public void setSLADAO(SLADAO sLADAO) {
+		SLADAO = sLADAO;
+	}
+
+	public DepartmentDAO getDepartmentDAO() {
+		return departmentDAO;
+	}
+
+	public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+		this.departmentDAO = departmentDAO;
+	}
+
+	public CostCenterDAO getCostCenterDAO() {
+		return costCenterDAO;
+	}
+
+	public void setCostCenterDAO(CostCenterDAO costCenterDAO) {
+		this.costCenterDAO = costCenterDAO;
+	}
+
+	public StepDAO getStepDAO() {
+		return stepDAO;
+	}
+
+	public void setStepDAO(StepDAO stepDAO) {
+		this.stepDAO = stepDAO;
+	}
+
 	
 	
 }
