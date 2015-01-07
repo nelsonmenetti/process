@@ -98,7 +98,5 @@ public class StepMaster implements Serializable{
 			return false;
 		return true;
 	}
-
-	
 	
 }

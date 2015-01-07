@@ -6,14 +6,14 @@ import java.util.List;
 import com.br.jty.process.business.exception.IllegalParameterException;
 import com.br.jty.process.entity.dao.ActivityMasterDAO;
 import com.br.jty.process.entity.dao.LinkedActsMasterDAO;
-import com.br.jty.process.entity.dao.StepDAO;
+import com.br.jty.process.entity.dao.StepMasterDAO;
 import com.br.jty.process.entity.master.ActivityMaster;
 import com.br.jty.process.entity.master.LinkedActsMaster;
 import com.br.jty.process.entity.master.StepMaster;
 
 public class StepMasterBusiness {
 
-	private StepDAO stepDAO= new StepDAO();
+	private StepMasterDAO stepDAO= new StepMasterDAO();
 	private LinkedActsMasterDAO linkedActivityMasterDAO = new LinkedActsMasterDAO();
 	private ActivityMasterDAO activityMasterDAO = new ActivityMasterDAO();
 
